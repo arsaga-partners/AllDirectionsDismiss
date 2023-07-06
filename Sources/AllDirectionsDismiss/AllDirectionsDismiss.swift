@@ -85,6 +85,11 @@ public class AllDirectionsDismiss: NSObject {
                 animationController = DragDismissAnimationController(direction: direction == .right ? .right : .left, backgroundAlpha: backgroundAlpha, backgroundColor: backgroundColor)
                 sender.setTranslation(CGPoint.zero, in: sender.view)
                 viewController?.presentingViewController?.dismiss(animated: true, completion: nil)
+                if let presentationController = viewController?.navigationController?.presentationController {
+                    if #available(iOS 13.0, *) {
+                        presentationController.delegate?.presentationControllerDidDismiss?(presentationController)
+                    }
+                }
             }
 
             let translation = sender.translation(in: sender.view)
