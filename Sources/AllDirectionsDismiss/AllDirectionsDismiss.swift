@@ -157,6 +157,16 @@ public class AllDirectionsDismiss: NSObject {
                 scrollView?.bounces = false
                 sender.setTranslation(CGPoint.zero, in: sender.view)
                 viewController?.presentingViewController?.dismiss(animated: true, completion: nil)
+                guard #available(iOS 13.0, *) else {return}
+                if let navi = viewController?.navigationController {
+                    if let presentationController = navi.presentationController {
+                        presentationController.delegate?.presentationControllerDidDismiss?(presentationController)
+                    }
+                } else {
+                    if let presentationController = viewController?.presentationController {
+                        presentationController.delegate?.presentationControllerDidDismiss?(presentationController)
+                    }
+                }
             }
 
             if currentDirection != sender.direction {
